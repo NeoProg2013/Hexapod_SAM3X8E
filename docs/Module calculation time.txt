@@ -1,0 +1,4 @@
+Servo driver calculation: 360us
+Libms drvier calculation: 4.1ms
+	- 1 limb kinematic calculation: 621us
+	- 1 limb path calculation: 200us
