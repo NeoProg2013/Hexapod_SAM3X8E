@@ -2,208 +2,153 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 
 ApplicationWindow {
-	visible: true
-	width: 585
-	height: 515
-	color: "#000000"
+    id: applicationWindow
+    visible: true
+    width: 300
+    height: 500
+    color: "#000000"
+    title: "SkynetSetup"
 
-	Connections {
-		target: CppCore
-		onConfigurationFound: {
-			configurationList.append({
-										 "name": configurationName
-									 })
-		}
-		onShowActionMessage: {
+    minimumWidth: 300
+    minimumHeight: 300
 
-			var color = "#FFFFFF"
-			actionsList.append({
-								   "message": message,
-								   "messageColor": color,
-								   "result": ""
-							   })
-		}
-		onShowActionResult: {
+    Connections {
+        target: CppCore
+        onConfigurationFound: {
+            configurationList.append({
+                                         "name": configurationName
+                                     })
+        }
+        onShowActionMessage: {
 
-			var color = "#FFFFFF"
-			if (result == "OK") {
-				color = "#00FF00"
-			} else if (result == "FAIL") {
-				color = "#FF0000"
-			}
+            var color = "#FFFF00"
+            actionsList.append({
+                                   "message": message,
+                                   "messageColor": color,
+                                   "result": ""
+                               })
+        }
+        onShowActionResult: {
 
-			actionsList.get(actionsList.rowCount() - 1).messageColor = color
-			actionsList.get(actionsList.rowCount() - 1).result = result
-		}
-		onShowOperationCompletedMessage: {
+            var color = "#FFFF00"
+            if (result == true) {
+                color = "#00FF00"
+            } else{
+                color = "#FF0000"
+            }
 
-			var color = "#00FF00"
-			actionsList.append({
-								   "message": message,
-								   "messageColor": color,
-								   "result": ""
-							   })
-		}
-	}
+            actionsList.get(actionsList.rowCount() - 1).messageColor = color
+        }
+        onShowOperationCompletedMessage: {
 
-	Pane {
-		focusPolicy: Qt.StrongFocus
-		anchors.fill: parent
+            var color = "#00FF00"
+            actionsList.append({
+                                   "message": message,
+                                   "messageColor": color,
+                                   "result": ""
+                               })
+        }
+    }
 
-		Label {
-			x: 255
-			width: 305
-			height: 20
-			text: qsTr("Ход выполнения операций")
-			verticalAlignment: Text.AlignVCenter
-			horizontalAlignment: Text.AlignHCenter
-		}
+    Frame {
+        x: 5
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 30
+        anchors.top: parent.top
+        anchors.topMargin: 110
+        anchors.right: parent.right
+        anchors.rightMargin: 5
+        anchors.left: parent.left
+        anchors.leftMargin: 5
+        ListView {
+            id: logView
+            anchors.fill: parent
+            clip: true
+            flickableDirection: Flickable.VerticalFlick
+            boundsBehavior: Flickable.StopAtBounds
+            ScrollBar.vertical: ScrollBar {
+                policy: ScrollBar.AsNeeded
+            }
 
-		Label {
-			width: 250
-			height: 20
-			text: qsTr("Список доступных конфигураций")
-			horizontalAlignment: Text.AlignHCenter
-		}
+            delegate: Rectangle {
+                width: parent.width
+                height: 20
+                color: "#000000"
+                clip: true
 
-		Frame {
-			y: 25
-			width: 250
-			height: 300
+                Label {
+                    x: 5
+                    width: parent.width - 80
+                    height: parent.height
+                    text: message
+                    color: messageColor
+                    font.pointSize: 10
+                    horizontalAlignment: Qt.AlignLeft
+                    verticalAlignment: Qt.AlignVCenter
+                }
+            }
+            model: ListModel {
+                id: actionsList
+            }
+            onCountChanged: {
+                logView.currentIndex = logView.count - 1
+            }
+        }
+    }
 
-			ListView {
-				id: configurationListView
-				clip: true
-				anchors.fill: parent
-				flickableDirection: Flickable.VerticalFlick
-				boundsBehavior: Flickable.StopAtBounds
-				ScrollBar.vertical: ScrollBar {
-					policy: ScrollBar.AsNeeded
-				}
-				delegate: Rectangle {
-					clip: true
-					width: parent.width - 25
-					height: 40
-					color: (index == configurationListView.currentIndex) ? "#888888" : "#000000"
 
-					MouseArea {
-						anchors.fill: parent
-						onClicked: {
-							configurationListView.currentIndex = index
-						}
-					}
-					Label {
-						x: 15
-						width: parent.width - 15
-						height: parent.height
-						text: name
-						color: "#FFFFFF"
-						verticalAlignment: Qt.AlignVCenter
-						horizontalAlignment: Qt.AlignLeft
-					}
-				}
-				model: ListModel {
-					id: configurationList
-				}
-			}
-		}
+    Button {
+        id: searchDeviceButton
+        height: 50
+        text: qsTr("Найти устройство")
+        anchors.top: parent.top
+        anchors.topMargin: 5
+        anchors.left: parent.left
+        anchors.leftMargin: 5
+        anchors.right: parent.right
+        anchors.rightMargin: 5
+        font.pointSize: 10
+        onClicked: {
+            actionsList.clear()
 
-		Button {
-			y: 330
-			width: 250
-			height: 50
-			text: qsTr("Обновить список конфигураций")
-			font.pointSize: 10
-			onClicked: {
-				configurationList.clear()
-				actionsList.clear()
-				CppCore.requestConfigurationListFromServer()
-			}
-		}
+            searchDeviceButton.enabled = false
+            loadButton.enabled = CppCore.findDevice()
+            searchDeviceButton.enabled = true
+        }
+    }
 
-		Button {
-			y: 385
-			width: 250
-			height: 50
-			enabled: configurationList.count != 0
-			text: qsTr("Скачать конфигурацию")
-			font.pointSize: 10
-			onClicked: {
-				actionsList.clear()
-				var name = configurationList.get(
-							configurationListView.currentIndex).name
-				CppCore.requestConfigurationFileFromServer(name)
-			}
-		}
+    Button {
+        id: loadButton
+        height: 50
+        enabled: false
+        text: qsTr("Загрузить конфигурацию")
+        anchors.top: parent.top
+        anchors.topMargin: 55
+        anchors.left: parent.left
+        anchors.leftMargin: 5
+        anchors.right: parent.right
+        anchors.rightMargin: 5
+        font.pointSize: 10
+        onClicked: {
+            actionsList.clear()
 
-		Button {
-			y: 440
-			width: 250
-			height: 50
-			text: qsTr("Загрузить в устройство")
-			font.pointSize: 10
-			onClicked: {
-				actionsList.clear()
-				CppCore.loadConfigurationToDevice()
-			}
-		}
+            searchDeviceButton.enabled = false
+            loadButton.enabled = false
+            loadButton.enabled = CppCore.loadConfigurationToDevice()
+            searchDeviceButton.enabled = true
+        }
+    }
 
-		Frame {
-			x: 255
-			y: 25
-			width: 305
-			height: 443
-			ListView {
-				id: logView
-				anchors.fill: parent
-				clip: true
-				flickableDirection: Flickable.VerticalFlick
-				boundsBehavior: Flickable.StopAtBounds
-				ScrollBar.vertical: ScrollBar {
-					policy: ScrollBar.AsNeeded
-				}
-
-				delegate: Rectangle {
-					width: parent.width
-					height: 20
-					color: "#000000"
-					clip: true
-
-					Label {
-						x: 5
-						width: parent.width - 80
-						height: parent.height
-						text: message
-						color: messageColor
-						font.pointSize: 10
-						horizontalAlignment: Qt.AlignLeft
-						verticalAlignment: Qt.AlignVCenter
-					}
-					Label {
-						anchors.right: parent.right
-						anchors.rightMargin: 30
-						width: 40
-						height: parent.height
-						text: result
-						color: messageColor
-						font.pointSize: 10
-						verticalAlignment: Qt.AlignVCenter
-						horizontalAlignment: Qt.AlignRight
-					}
-				}
-				model: ListModel {
-					id: actionsList
-				}
-			}
-		}
-
-		Label {
-			id: label
-			x: 484
-			y: 473
-			text: qsTr("Версия 1.00")
-			verticalAlignment: Text.AlignVCenter
-			horizontalAlignment: Text.AlignRight
-		}
-	}
+    Label {
+        x: 504
+        y: 275
+        height: 20
+        text: qsTr("Версия 1.00")
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 5
+        anchors.right: parent.right
+        anchors.rightMargin: 5
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignRight
+    }
 }

@@ -36,8 +36,5 @@ HEADERS += \
     core.h \
     modbus.h
 
-LIBS += -L$$PWD/lib/ -llibcrypto
-LIBS += -L$$PWD/lib/ -llibssl
-
 INCLUDEPATH += $$PWD/.
 DEPENDPATH += $$PWD/.

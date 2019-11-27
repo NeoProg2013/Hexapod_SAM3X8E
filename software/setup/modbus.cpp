@@ -18,10 +18,6 @@
 
 Modbus::Modbus(QObject* parent) : QObject(parent) {
 
-	m_port.setBaudRate(QSerialPort::BaudRate::Baud115200);
-	m_port.setParity(QSerialPort::Parity::NoParity);
-	m_port.setStopBits(QSerialPort::StopBits::TwoStop);
-	m_port.setDataBits(QSerialPort::DataBits::Data8);
 }
 
 bool Modbus::findDevice(void) {
@@ -32,25 +28,41 @@ bool Modbus::findDevice(void) {
 	auto serialPortList = QSerialPortInfo::availablePorts();
 	for (int i = 0; i < serialPortList.size(); ++i) {
 
-		m_port.setPortName(serialPortList[i].portName());
+        m_portName = serialPortList[i].portName();
 
-		QByteArray id;
-		if (this->readRAM(0x0000, &id, 4) == false) {
-			continue;
-		}
+        if (this->checkDevice() == true) {
+            qDebug() << "Modbus: [findDevice] Device found";
+            return true;
+        }
 
-		if (id.at(0) == static_cast<char>(0xAB) && id.at(1) == static_cast<char>(0xCD) &&
-			id.at(2) == static_cast<char>(0xEF) && id.at(3) == static_cast<char>(0xFF)) {
-
-			qDebug() << "Modbus: [findDevice] Device found";
-			qDebug() << "Modbus: [findDevice] Stop";
-			return true;
-		}
+        m_portName.clear();
 	}
 
-	qDebug() << "Modbus: [findDevice] Device not found";
+    qDebug() << "Modbus: [findDevice] Device not found";
 	qDebug() << "Modbus: [findDevice] Stop";
 	return false;
+}
+
+bool Modbus::checkDevice(void) {
+
+    qDebug() << "Modbus: [checkDevice] Start";
+
+    QByteArray id;
+    if (this->readRAM(0x0000, &id, 4) == false) {
+        qDebug() << "Modbus: [checkDevice] Cannot read RAM";
+        return false;
+    }
+
+    /*if (id.at(0) == static_cast<char>(0xAB) && id.at(1) == static_cast<char>(0xCD) &&
+        id.at(2) == static_cast<char>(0xEF) && id.at(3) == static_cast<char>(0xFF)) {
+
+        qDebug() << "Modbus: [checkDevice] Wrong ID";
+        return true;
+    }
+
+    return false;*/
+
+    return true;
 }
 
 bool Modbus::readRAM(uint16_t address, QByteArray* buffer, uint8_t bytesCount) {
@@ -153,6 +165,10 @@ bool Modbus::writeEEPROM(uint16_t address, const QByteArray& data) {
 	return operationResult;
 }
 
+QString Modbus::devicePortName() const {
+
+    return m_portName;
+}
 
 
 
@@ -160,34 +176,42 @@ bool Modbus::writeEEPROM(uint16_t address, const QByteArray& data) {
 
 bool Modbus::processModbusTransaction(const QByteArray& request, QByteArray* responseData) {
 
+    // Configure port
+    QSerialPort port;
+    port.setPortName(m_portName);
+    port.setBaudRate(QSerialPort::BaudRate::Baud115200);
+    port.setParity(QSerialPort::Parity::NoParity);
+    port.setStopBits(QSerialPort::StopBits::TwoStop);
+    port.setDataBits(QSerialPort::DataBits::Data8);
+
 	// Open and clear serial port
-	if (m_port.open(QSerialPort::ReadWrite) == false) {
+    if (port.open(QSerialPort::ReadWrite) == false) {
 		return false;
 	}
-	m_port.readAll();
+    port.readAll();
 
 	// Send request
-	m_port.write(request);
-	m_port.flush();
+    port.write(request);
+    port.flush();
 
 	// Wait response
-	m_timeoutTimer.stop();
-	m_timeoutTimer.setInterval(500);
-	m_timeoutTimer.setSingleShot(true);
-	m_timeoutTimer.start();
-	while (m_port.bytesAvailable() < MODBUS_MIN_RESPONSE_LENGTH) {
+    QTimer timeoutTimer;
+    timeoutTimer.setInterval(500);
+    timeoutTimer.setSingleShot(true);
+    timeoutTimer.start();
+    while (port.bytesAvailable() < MODBUS_MIN_RESPONSE_LENGTH) {
 
-		QGuiApplication::processEvents();
+        QGuiApplication::processEvents();
 
-		if (m_timeoutTimer.isActive() == false) {
-			m_port.close();
+        if (timeoutTimer.isActive() == false) {
+            port.close();
 			return false;
-		}
+        }
 	}
 
 	// Read response
-	QByteArray response = m_port.readAll();
-	m_port.close();
+    QByteArray response = port.readAll();
+    port.close();
 
 	// Verify response
 	if (this->calculateCRC16(response) != 0) {
