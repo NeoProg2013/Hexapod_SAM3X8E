@@ -1,0 +1,391 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>7.0</ProjectVersion>
+    <ToolchainName>com.Atmel.ARMGCC.C</ToolchainName>
+    <ProjectGuid>dce6c7e3-ee26-4d79-826b-08594b9ad897</ProjectGuid>
+    <avrdevice>ATSAM3X8E</avrdevice>
+    <avrdeviceseries>none</avrdeviceseries>
+    <OutputType>Executable</OutputType>
+    <Language>C</Language>
+    <OutputFileName>$(MSBuildProjectName)</OutputFileName>
+    <OutputFileExtension>.elf</OutputFileExtension>
+    <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
+    <AssemblyName>Skynet</AssemblyName>
+    <Name>Skynet</Name>
+    <RootNamespace>Skynet</RootNamespace>
+    <ToolchainFlavour>Native</ToolchainFlavour>
+    <KeepTimersRunning>true</KeepTimersRunning>
+    <OverrideVtor>false</OverrideVtor>
+    <CacheFlash>true</CacheFlash>
+    <ProgFlashFromRam>true</ProgFlashFromRam>
+    <RamSnippetAddress>0x20000000</RamSnippetAddress>
+    <UncachedRange />
+    <preserveEEPROM>true</preserveEEPROM>
+    <OverrideVtorValue>exception_table</OverrideVtorValue>
+    <BootSegment>2</BootSegment>
+    <ResetRule>0</ResetRule>
+    <eraseonlaunchrule>4</eraseonlaunchrule>
+    <EraseKey />
+    <AsfFrameworkConfig>
+      <framework-data>
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.36.1" />
+        </dependencies>
+      </framework-data>
+    </AsfFrameworkConfig>
+    <avrtool>com.atmel.avrdbg.tool.samice</avrtool>
+    <avrtoolserialnumber>158005816</avrtoolserialnumber>
+    <avrdeviceexpectedsignature>0x285E0A60</avrdeviceexpectedsignature>
+    <custom>
+      <ToolOptions>
+        <InterfaceProperties>
+        </InterfaceProperties>
+        <InterfaceName>
+        </InterfaceName>
+      </ToolOptions>
+      <ToolType>custom</ToolType>
+      <ToolNumber>
+      </ToolNumber>
+      <ToolName>Custom Programming Tool</ToolName>
+    </custom>
+    <avrtoolinterface>SWD</avrtoolinterface>
+    <com_atmel_avrdbg_tool_samice>
+      <ToolOptions>
+        <InterfaceProperties>
+          <SwdClock>1000000</SwdClock>
+          <JtagEnableExtResetOnStartSession>true</JtagEnableExtResetOnStartSession>
+          <JtagInChain>false</JtagInChain>
+          <JtagDevicesBefore>0</JtagDevicesBefore>
+          <JtagDevicesAfter>0</JtagDevicesAfter>
+          <JtagInstrBitsBefore>0</JtagInstrBitsBefore>
+          <JtagInstrBitsAfter>0</JtagInstrBitsAfter>
+          <JtagSelectedDeviceIndexInChain>0</JtagSelectedDeviceIndexInChain>
+          <JtagDbgClock>4000000</JtagDbgClock>
+          <JtagDaisyChainDevices>
+          </JtagDaisyChainDevices>
+        </InterfaceProperties>
+        <InterfaceName>SWD</InterfaceName>
+        <JlinkConfigFile>C:\Users\NeoProg\Desktop\Skynet\firmware\branches\movement_driver_improvement\Skynet\jlink.config</JlinkConfigFile>
+      </ToolOptions>
+      <ToolType>com.atmel.avrdbg.tool.samice</ToolType>
+      <ToolNumber>158005816</ToolNumber>
+      <ToolName>J-Link</ToolName>
+    </com_atmel_avrdbg_tool_samice>
+    <avrtoolinterfaceclock>1000000</avrtoolinterfaceclock>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <ToolchainSettings>
+      <ArmGcc>
+  <armgcc.common.outputfiles.hex>True</armgcc.common.outputfiles.hex>
+  <armgcc.common.outputfiles.lss>True</armgcc.common.outputfiles.lss>
+  <armgcc.common.outputfiles.eep>True</armgcc.common.outputfiles.eep>
+  <armgcc.common.outputfiles.bin>True</armgcc.common.outputfiles.bin>
+  <armgcc.common.outputfiles.srec>True</armgcc.common.outputfiles.srec>
+  <armgcc.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>NDEBUG</Value>
+    </ListValues>
+  </armgcc.compiler.symbols.DefSymbols>
+  <armgcc.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>%24(PackRepoDir)\arm\cmsis\5.0.1\CMSIS\Include\</Value>
+      <Value>%24(PackRepoDir)\atmel\SAM3X_DFP\1.0.50\include</Value>
+      <Value>../include</Value>
+      <Value>../periph_drv</Value>
+      <Value>../device_drv</Value>
+    </ListValues>
+  </armgcc.compiler.directories.IncludePaths>
+  <armgcc.compiler.optimization.level>Optimize more (-O2)</armgcc.compiler.optimization.level>
+  <armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
+  <armgcc.compiler.warnings.AllWarnings>True</armgcc.compiler.warnings.AllWarnings>
+  <armgcc.compiler.warnings.ExtraWarnings>True</armgcc.compiler.warnings.ExtraWarnings>
+  <armgcc.linker.libraries.Libraries>
+    <ListValues>
+      <Value>libm</Value>
+    </ListValues>
+  </armgcc.linker.libraries.Libraries>
+  <armgcc.linker.libraries.LibrarySearchPaths>
+    <ListValues>
+      <Value>%24(ProjectDir)\Device_Startup</Value>
+    </ListValues>
+  </armgcc.linker.libraries.LibrarySearchPaths>
+  <armgcc.linker.optimization.GarbageCollectUnusedSections>True</armgcc.linker.optimization.GarbageCollectUnusedSections>
+  <armgcc.linker.memorysettings.ExternalRAM />
+  <armgcc.linker.miscellaneous.LinkerFlags>-Tsam3x8e_flash.ld</armgcc.linker.miscellaneous.LinkerFlags>
+  <armgcc.assembler.general.IncludePaths>
+    <ListValues>
+      <Value>%24(PackRepoDir)\arm\cmsis\5.0.1\CMSIS\Include\</Value>
+      <Value>%24(PackRepoDir)\atmel\SAM3X_DFP\1.0.50\include</Value>
+    </ListValues>
+  </armgcc.assembler.general.IncludePaths>
+  <armgcc.preprocessingassembler.general.IncludePaths>
+    <ListValues>
+      <Value>%24(PackRepoDir)\arm\cmsis\5.0.1\CMSIS\Include\</Value>
+      <Value>%24(PackRepoDir)\atmel\SAM3X_DFP\1.0.50\include</Value>
+    </ListValues>
+  </armgcc.preprocessingassembler.general.IncludePaths>
+</ArmGcc>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <ToolchainSettings>
+      <ArmGcc>
+  <armgcc.common.outputfiles.hex>True</armgcc.common.outputfiles.hex>
+  <armgcc.common.outputfiles.lss>False</armgcc.common.outputfiles.lss>
+  <armgcc.common.outputfiles.eep>False</armgcc.common.outputfiles.eep>
+  <armgcc.common.outputfiles.bin>True</armgcc.common.outputfiles.bin>
+  <armgcc.common.outputfiles.srec>False</armgcc.common.outputfiles.srec>
+  <armgcc.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>DEBUG</Value>
+    </ListValues>
+  </armgcc.compiler.symbols.DefSymbols>
+  <armgcc.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>%24(PackRepoDir)\arm\cmsis\5.0.1\CMSIS\Include\</Value>
+      <Value>%24(PackRepoDir)\atmel\SAM3X_DFP\1.0.50\include</Value>
+      <Value>../include</Value>
+      <Value>../periph_drv</Value>
+      <Value>../device_drv</Value>
+    </ListValues>
+  </armgcc.compiler.directories.IncludePaths>
+  <armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
+  <armgcc.compiler.optimization.DebugLevel>Maximum (-g3)</armgcc.compiler.optimization.DebugLevel>
+  <armgcc.compiler.warnings.AllWarnings>True</armgcc.compiler.warnings.AllWarnings>
+  <armgcc.compiler.warnings.ExtraWarnings>True</armgcc.compiler.warnings.ExtraWarnings>
+  <armgcc.linker.libraries.Libraries>
+    <ListValues>
+      <Value>libm</Value>
+    </ListValues>
+  </armgcc.linker.libraries.Libraries>
+  <armgcc.linker.libraries.LibrarySearchPaths>
+    <ListValues>
+      <Value>%24(ProjectDir)\Device_Startup</Value>
+    </ListValues>
+  </armgcc.linker.libraries.LibrarySearchPaths>
+  <armgcc.linker.optimization.GarbageCollectUnusedSections>True</armgcc.linker.optimization.GarbageCollectUnusedSections>
+  <armgcc.linker.memorysettings.ExternalRAM />
+  <armgcc.linker.miscellaneous.LinkerFlags>-Tsam3x8e_flash.ld</armgcc.linker.miscellaneous.LinkerFlags>
+  <armgcc.assembler.general.IncludePaths>
+    <ListValues>
+      <Value>%24(PackRepoDir)\arm\cmsis\5.0.1\CMSIS\Include\</Value>
+      <Value>%24(PackRepoDir)\atmel\SAM3X_DFP\1.0.50\include</Value>
+    </ListValues>
+  </armgcc.assembler.general.IncludePaths>
+  <armgcc.assembler.debugging.DebugLevel>Default (-g)</armgcc.assembler.debugging.DebugLevel>
+  <armgcc.preprocessingassembler.general.IncludePaths>
+    <ListValues>
+      <Value>%24(PackRepoDir)\arm\cmsis\5.0.1\CMSIS\Include\</Value>
+      <Value>%24(PackRepoDir)\atmel\SAM3X_DFP\1.0.50\include</Value>
+    </ListValues>
+  </armgcc.preprocessingassembler.general.IncludePaths>
+  <armgcc.preprocessingassembler.debugging.DebugLevel>Default (-Wa,-g)</armgcc.preprocessingassembler.debugging.DebugLevel>
+</ArmGcc>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="device_drv\hc-sr04.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="device_drv\hc-sr04.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="device_drv\ssd1306_128x64.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="device_drv\ssd1306_128x64.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device_Startup\startup_sam3xa.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Device_Startup\system_sam3xa.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\buzzer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\gait_sequences.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\gui.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\led.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\monitoring.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\movement_engine.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\oled_gl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\oled_gl_font_6x8.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\orientation.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\veeprom_map.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\error_handling.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\limbs_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\modbus.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\ram_map.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\scr.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\servo_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\veeprom.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\version.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="periph_drv\adc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="periph_drv\adc.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="periph_drv\dac.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="periph_drv\dac.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="periph_drv\flash.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="periph_drv\flash.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="periph_drv\i2c.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="periph_drv\i2c.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="periph_drv\pwm.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="periph_drv\pwm.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="periph_drv\systimer.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="periph_drv\systimer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="periph_drv\usart0_pdc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="periph_drv\usart0_pdc.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="periph_drv\usart1_pdc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="periph_drv\usart1_pdc.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="periph_drv\usart3_pdc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="periph_drv\usart3_pdc.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\buzzer.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\error_handling.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\gui.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\led.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\limbs_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\modbus.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\monitoring.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\movement_engine.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\oled_gl.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\orientation.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\ram_map.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\scr.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\servo_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\syscalls.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\veeprom.c">
+      <SubType>compile</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Device_Startup\" />
+    <Folder Include="include" />
+    <Folder Include="device_drv" />
+    <Folder Include="periph_drv" />
+    <Folder Include="source" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Device_Startup\sam3x8e_flash.ld">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="Device_Startup\sam3x8e_sram.ld">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="Device_Startup\sam3xa_flash.ld">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="Device_Startup\sam3xa_sram.ld">
+      <SubType>compile</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
+</Project>
